@@ -3,7 +3,7 @@ using IdentityService.Application.Interfaces.Repository;
 using IdentityService.Domain.Entities;
 using MediatR;
 
-namespace IdentityService.Application.UseCases.Users.Login;
+namespace IdentityService.Application.UseCases.Users.Register;
 
 public sealed class RegisterCommandHandler(IUnitOfWork unitOfWork, IPasswordHasher passwordHasher) : IRequestHandler<RegisterCommand, Unit>
 {

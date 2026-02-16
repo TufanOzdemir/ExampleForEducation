@@ -1,7 +1,8 @@
 using IdentityService.Application.DTOs;
 using IdentityService.Application.UseCases.Users.GetUserById;
+using IdentityService.Application.UseCases.Users.GetUsers;
 using IdentityService.Application.UseCases.Users.Login;
-using IdentityService.Application.Abstraction;
+using IdentityService.Application.UseCases.Users.Register;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,21 +10,21 @@ using Microsoft.AspNetCore.Mvc;
 namespace IdentityService.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class UserController(IMediator mediator, IUserService userService) : ControllerBase
+public class UserController(IMediator mediator) : ControllerBase
 {
     [HttpGet("GetAll")]
     [Authorize(Roles = "GetAll_User")]
-    public IActionResult GetAllUsers()
+    public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
     {
-        var users = userService.GetAll();
+        var users = await mediator.Send(new GetUsersQuery(), cancellationToken);
         return Ok(users);
     }
 
     [HttpGet("Test")]
     [Authorize(Roles = "GetById_User")]
-    public async Task<IActionResult> GetUserById(int id)
+    public async Task<IActionResult> GetUserById(int id, CancellationToken cancellationToken)
     {
-        var user = await mediator.Send(new GetUserByIdQuery(id));
+        var user = await mediator.Send(new GetUserByIdQuery(id), cancellationToken);
         return Ok(user);
     }
 
