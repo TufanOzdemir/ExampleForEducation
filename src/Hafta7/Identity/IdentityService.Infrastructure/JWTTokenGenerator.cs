@@ -1,9 +1,9 @@
+using System.Security.Claims;
 using IdentityService.Application.Interfaces;
 using IdentityService.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 
 namespace IdentityService.Infrastructure
@@ -12,12 +12,13 @@ namespace IdentityService.Infrastructure
     {
         public string GenerateToken(User user)
         {
-            // 1. Temel Claim'ler (Identity)
+            // 1. Temel Claim'ler (Identity) - NameIdentifier tüm Hafta7 mikroservislerinde CurrentUserService.UserId için kullanılır
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Name, user.Name),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

@@ -1,0 +1,7 @@
+{
+  "Jwt": {
+    "Secret": "bu_cok_gizli_ve_uzun_bir_anahtar_olmalidir_256bit",
+    "Issuer": "https://mysapi.com",
+    "Audience": "https://myapp.com"
+  }
+}
