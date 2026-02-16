@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application.Interfaces;
+using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -21,12 +21,12 @@ namespace CleanArchitecture.Infrastructure
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            // 2. Permission'ları Claim olarak ekleme
-            // Az önce kurduğumuz Many-to-Many ilişkisi sayesinde user.Permissions dolu gelecek.
+            // 2. Permission'ları Role claim olarak ekleme
+            // [Authorize(Roles = "GetAll_User")] gibi attribute'lar ClaimTypes.Role claim'ine bakar.
+            // "permission" yerine Role claim kullanılmazsa 403 Forbidden döner.
             foreach (var permission in user.Permissions)
             {
-                // "permission" tipinde her bir yetkiyi ekliyoruz
-                claims.Add(new Claim("permission", permission.Name));
+                claims.Add(new Claim(ClaimTypes.Role, permission.Name));
             }
 
             // 3. Güvenlik Anahtarı ve İmzalama

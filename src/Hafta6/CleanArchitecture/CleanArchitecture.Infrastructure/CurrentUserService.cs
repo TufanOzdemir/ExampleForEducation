@@ -13,9 +13,9 @@ namespace CleanArchitecture.Infrastructure
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public int? UserId =>
+        public int UserId =>
             int.TryParse(_httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value, out var id)
-            ? id : null;
+            ? id : 0;
 
         public bool IsAuthenticated => _httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
     }
