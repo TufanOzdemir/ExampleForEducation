@@ -1,4 +1,4 @@
-﻿namespace Example1.Middleware;
+namespace OrderService.Api.Middleware;
 
 public class RequestLogMiddleware
 {

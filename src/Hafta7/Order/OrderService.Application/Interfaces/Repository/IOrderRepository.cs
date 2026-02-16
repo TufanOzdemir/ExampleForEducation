@@ -1,9 +1,8 @@
-﻿using CleanArchitecture.Domain.Entities;
+using OrderService.Domain.Entities;
 
-namespace CleanArchitecture.Application.Interfaces.Repository
+namespace OrderService.Application.Interfaces.Repository;
+
+public interface IOrderRepository
 {
-    public interface IOrderRepository
-    {
-        void Add(Order order);
-    }
+    void Add(Order order);
 }

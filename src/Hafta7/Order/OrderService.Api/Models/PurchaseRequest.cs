@@ -1,7 +1,6 @@
-﻿namespace Example1.Models
+namespace OrderService.Api.Models;
+
+public class PurchaseRequest
 {
-    public class PurchaseRequest
-    {
-        public int UserId { get; set; }
-    }
+    public int UserId { get; set; }
 }

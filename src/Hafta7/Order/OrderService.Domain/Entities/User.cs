@@ -1,6 +1,6 @@
-using CleanArchitecture.Domain.Common;
+using OrderService.Domain.Common;
 
-namespace CleanArchitecture.Domain.Entities;
+namespace OrderService.Domain.Entities;
 
 public partial class User : AggregateRoot
 {
@@ -14,12 +14,5 @@ public partial class User : AggregateRoot
 
     public virtual ICollection<Basket> Baskets { get; set; } = new List<Basket>();
 
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
-
-    public virtual ICollection<Permission> Permissions { get; set; } = new List<Permission>();
-
-    public bool HasBasketItems()
-    {
-        return Baskets != null && Baskets.Any();
-    }
+    public bool HasBasketItems() => Baskets != null && Baskets.Any();
 }

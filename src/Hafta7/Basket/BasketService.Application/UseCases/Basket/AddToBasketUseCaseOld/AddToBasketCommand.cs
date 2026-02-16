@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+using MediatR;
 
-namespace BasketService.Application.UseCases.Basket.AddToBasketUseCaseOld
-{
-    public record AddToBasketCommand (int ProductId);
-}
+namespace BasketService.Application.UseCases.Basket.AddToBasketUseCaseOld;
+
+public record AddToBasketCommand(int ProductId) : IRequest<Unit>;

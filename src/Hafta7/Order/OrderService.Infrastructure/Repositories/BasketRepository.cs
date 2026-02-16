@@ -1,18 +1,13 @@
-using CleanArchitecture.Application.Interfaces.Repository;
-using CleanArchitecture.Domain.Entities;
+using OrderService.Application.Interfaces.Repository;
+using OrderService.Domain.Entities;
 
-namespace CleanArchitecture.Infrastructure.Repositories;
+namespace OrderService.Infrastructure.Repositories;
 
-internal class BasketRepository(MarketplaceDbContext _context) : IBasketRepository
+internal class BasketRepository(OrderDbContext context) : IBasketRepository
 {
-    public void Add(Basket basket)
-    {
-        _context.Baskets.Add(basket);
-    }
-
     public void ClearBasket(int userId)
     {
-        var baskets = _context.Baskets.Where(b => b.UserId == userId).ToList();
-        _context.Baskets.RemoveRange(baskets);
+        var baskets = context.Baskets.Where(b => b.UserId == userId).ToList();
+        context.Baskets.RemoveRange(baskets);
     }
 }

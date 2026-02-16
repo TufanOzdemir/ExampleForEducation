@@ -1,4 +1,4 @@
-namespace CleanArchitecture.Domain.Events;
+namespace OrderService.Domain.Events;
 
 /// <summary>
 /// Domain event'leri için temel sınıf. EventId ve OccurredOnUtc otomatik atanır.

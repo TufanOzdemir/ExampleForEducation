@@ -1,11 +1,10 @@
 using ProductService.Domain.Entities;
 
-namespace ProductService.Application.Interfaces.Repository
-{
-    public interface IProductRepository
-    {
-        Product GetById(int id);
+namespace ProductService.Application.Interfaces.Repository;
 
-        void ReduceStock(int productId);
-    }
+public interface IProductRepository
+{
+    List<Product> GetAll();
+    Product? GetById(int id);
+    void ReduceStock(int productId);
 }

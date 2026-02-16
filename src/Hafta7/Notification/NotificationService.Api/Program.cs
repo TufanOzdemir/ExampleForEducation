@@ -1,11 +1,7 @@
 using NotificationService.Application;
-using NotificationService.Infrastructure;
 using NotificationService.Api.Extension;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using NLog;
 using NLog.Web;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,30 +12,12 @@ var logger = LogManager.Setup()
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerWithJwt();
+builder.Services.AddSwaggerGen();
 
-builder.Services.RegisterInfrastructureServices(builder.Configuration);
 builder.Services.RegisterApplicationServices();
 
 builder.Logging.ClearProviders();
 builder.Host.UseNLog();
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"] ?? throw new InvalidOperationException("Jwt:Secret yap�land�rmas� gerekli.")))
-        };
-    });
-
-builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -53,9 +31,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.MapControllers();
 

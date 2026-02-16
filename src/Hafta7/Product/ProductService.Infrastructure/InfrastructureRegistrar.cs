@@ -1,4 +1,3 @@
-using ProductService.Application.Interfaces;
 using ProductService.Application.Interfaces.Repository;
 using ProductService.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -12,18 +11,9 @@ namespace ProductService.Infrastructure
         public static void RegisterInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IBasketRepository, BasketRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
-
-            services.AddSingleton<IPasswordHasher, PasswordHasher>();
-            services.AddSingleton<ITokenGenerator, JWTTokenGenerator>();
-
-            services.AddSingleton<ICurrentUserService, CurrentUserService>();
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddDbContext<MarketplaceDbContext>(options =>
+            services.AddDbContext<ProductDbContext>(options =>
             {
                 options
                     .UseSqlServer(configuration.GetConnectionString("DefaultConnection"))

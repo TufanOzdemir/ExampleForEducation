@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+namespace OrderService.Application.Interfaces.Repository;
 
-namespace CleanArchitecture.Application.Interfaces.Repository
+public interface IUnitOfWork
 {
-    public interface IUnitOfWork
-    {
-        IUserRepository Users { get; }
-        IBasketRepository Baskets { get; }
-        IProductRepository Products { get; }
-        IOrderRepository Orders { get; }
-
-        int SaveChanges();
-    }
+    IUserRepository Users { get; }
+    IBasketRepository Baskets { get; }
+    IProductRepository Products { get; }
+    IOrderRepository Orders { get; }
+    int SaveChanges();
 }

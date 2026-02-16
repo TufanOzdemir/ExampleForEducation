@@ -1,11 +1,9 @@
-using MediatR;
-
 namespace BasketService.Domain.Events;
 
 /// <summary>
-/// Domain'de gerçekleşen, MediatR ile publish edilip INotificationHandler ile işlenebilen olaylar.
+/// Domain'de gerçekleşen olaylar için marker arayüz.
 /// </summary>
-public interface IDomainEvent : INotification
+public interface IDomainEvent
 {
     Guid EventId { get; }
     DateTime OccurredOnUtc { get; }

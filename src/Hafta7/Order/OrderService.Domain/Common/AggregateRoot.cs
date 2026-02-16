@@ -1,6 +1,6 @@
-using CleanArchitecture.Domain.Events;
+using OrderService.Domain.Events;
 
-namespace CleanArchitecture.Domain.Common;
+namespace OrderService.Domain.Common;
 
 /// <summary>
 /// Aggregate kökü için temel sınıf. Domain event'leri toplar ve dışarıya sunar.

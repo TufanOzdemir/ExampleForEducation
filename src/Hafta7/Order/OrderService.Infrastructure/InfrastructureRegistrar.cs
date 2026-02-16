@@ -1,11 +1,11 @@
-﻿using CleanArchitecture.Application.Interfaces;
-using CleanArchitecture.Application.Interfaces.Repository;
-using CleanArchitecture.Infrastructure.Repositories;
+using OrderService.Application.Interfaces;
+using OrderService.Application.Interfaces.Repository;
+using OrderService.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CleanArchitecture.Infrastructure
+namespace OrderService.Infrastructure
 {
     public static class InfrastructureRegistrar
     {
@@ -15,15 +15,10 @@ namespace CleanArchitecture.Infrastructure
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
-
-            services.AddSingleton<IPasswordHasher, PasswordHasher>();
-            services.AddSingleton<ITokenGenerator, JWTTokenGenerator>();
-
             services.AddSingleton<ICurrentUserService, CurrentUserService>();
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddDbContext<MarketplaceDbContext>(options =>
+            services.AddDbContext<OrderDbContext>(options =>
             {
                 options
                     .UseSqlServer(configuration.GetConnectionString("DefaultConnection"))

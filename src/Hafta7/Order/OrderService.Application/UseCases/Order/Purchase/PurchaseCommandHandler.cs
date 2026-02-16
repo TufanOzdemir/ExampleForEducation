@@ -1,10 +1,10 @@
-using CleanArchitecture.Application.Interfaces;
-using CleanArchitecture.Application.Interfaces.Repository;
-using CleanArchitecture.Domain.Entities;
-using CleanArchitecture.Domain.Events;
+using OrderService.Application.Interfaces;
+using OrderService.Application.Interfaces.Repository;
+using OrderService.Domain.Entities;
+using OrderService.Domain.Events;
 using MediatR;
 
-namespace CleanArchitecture.Application.UseCases.Orders.Purchase;
+namespace OrderService.Application.UseCases.Order.Purchase;
 
 public sealed class PurchaseCommandHandler(IUnitOfWork unitOfWork, IMediator mediator, ICurrentUserService currentUserService) : IRequestHandler<PurchaseCommand, Unit>
 {
@@ -17,8 +17,6 @@ public sealed class PurchaseCommandHandler(IUnitOfWork unitOfWork, IMediator med
         if (!user.HasBasketItems())
             throw new ArgumentException("Basket is empty");
 
-        var baskets = user.Baskets.ToList();
-
         var list = user.Baskets.Select(b => new OrderProduct
         {
             ProductId = b.ProductId,
@@ -26,7 +24,7 @@ public sealed class PurchaseCommandHandler(IUnitOfWork unitOfWork, IMediator med
             Product = b.Product
         }).ToList();
 
-        var order = Order.Create(user.Id, list);
+        var order = Domain.Entities.Order.Create(user.Id, list);
         if (!order.Validate())
             throw new InvalidOperationException("Order validation failed");
 
@@ -41,7 +39,7 @@ public sealed class PurchaseCommandHandler(IUnitOfWork unitOfWork, IMediator med
         unitOfWork.SaveChanges();
 
         await mediator.Publish(new OrderCreatedEvent(order.Id, order.UserId, order.TotalPrice), cancellationToken);
-        
+
         return Unit.Value;
     }
 }

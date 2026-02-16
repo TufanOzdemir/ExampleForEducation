@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace CleanArchitecture.Application.UseCases.Orders.Purchase;
+namespace OrderService.Application.UseCases.Order.Purchase;
 
 /// <summary>
 /// Sepetteki ürünlerle sipariş oluşturma (MediatR command).

@@ -1,10 +1,8 @@
-﻿using CleanArchitecture.Domain.Entities;
+using OrderService.Domain.Entities;
 
-namespace CleanArchitecture.Application.Interfaces.Repository
+namespace OrderService.Application.Interfaces.Repository;
+
+public interface IBasketRepository
 {
-    public interface IBasketRepository
-    {
-        void Add(Basket basket);
-        void ClearBasket(int userId);
-    }
+    void ClearBasket(int userId);
 }

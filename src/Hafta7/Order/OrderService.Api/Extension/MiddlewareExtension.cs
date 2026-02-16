@@ -1,14 +1,14 @@
-﻿namespace Example1.Extension;
+namespace OrderService.Api.Extension;
 
 public static class MiddlewareExtension
 {
     public static IApplicationBuilder UseRequestLogging(this IApplicationBuilder builder)
     {
-        return builder.UseMiddleware<Example1.Middleware.RequestLogMiddleware>();
+        return builder.UseMiddleware<OrderService.Api.Middleware.RequestLogMiddleware>();
     }
 
     public static IApplicationBuilder UseExceptionHandling(this IApplicationBuilder builder)
     {
-        return builder.UseMiddleware<Example1.Middleware.ExceptionHandlingMiddleware>();
+        return builder.UseMiddleware<OrderService.Api.Middleware.ExceptionHandlingMiddleware>();
     }
 }

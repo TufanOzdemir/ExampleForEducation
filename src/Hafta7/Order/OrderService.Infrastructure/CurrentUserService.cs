@@ -1,8 +1,8 @@
-﻿using CleanArchitecture.Application.Interfaces;
+using OrderService.Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace CleanArchitecture.Infrastructure
+namespace OrderService.Infrastructure
 {
     public class CurrentUserService : ICurrentUserService
     {

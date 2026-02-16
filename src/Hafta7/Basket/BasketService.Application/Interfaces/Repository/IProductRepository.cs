@@ -4,8 +4,6 @@ namespace BasketService.Application.Interfaces.Repository
 {
     public interface IProductRepository
     {
-        Product GetById(int id);
-
-        void ReduceStock(int productId);
+        Product? GetById(int id);
     }
 }

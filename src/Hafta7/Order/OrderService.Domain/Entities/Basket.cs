@@ -1,6 +1,6 @@
-using CleanArchitecture.Domain.Common;
+using OrderService.Domain.Common;
 
-namespace CleanArchitecture.Domain.Entities;
+namespace OrderService.Domain.Entities;
 
 public partial class Basket : AggregateRoot
 {

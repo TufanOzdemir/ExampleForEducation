@@ -1,35 +1,16 @@
-using NotificationService.Application.Interfaces;
-using NotificationService.Application.Interfaces.Repository;
-using NotificationService.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace NotificationService.Infrastructure
+namespace NotificationService.Infrastructure;
+
+/// <summary>
+/// Notification servisi veritabanı veya harici altyapı kullanmıyor; sadece event handler içerir.
+/// Bu sınıf solution build için placeholder olarak bırakıldı.
+/// </summary>
+public static class InfrastructureRegistrar
 {
-    public static class InfrastructureRegistrar
+    public static void RegisterInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        public static void RegisterInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IBasketRepository, BasketRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
-
-            services.AddSingleton<IPasswordHasher, PasswordHasher>();
-            services.AddSingleton<ITokenGenerator, JWTTokenGenerator>();
-
-            services.AddSingleton<ICurrentUserService, CurrentUserService>();
-
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            services.AddDbContext<MarketplaceDbContext>(options =>
-            {
-                options
-                    .UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
-                    .EnableSensitiveDataLogging()
-                    .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
-            });
-        }
+        // Notification servisi sadece MediatR event handler kullanıyor, altyapı kaydı yok.
     }
 }

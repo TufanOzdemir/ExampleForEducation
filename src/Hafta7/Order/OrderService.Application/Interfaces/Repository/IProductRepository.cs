@@ -1,11 +1,9 @@
-﻿using CleanArchitecture.Domain.Entities;
+using OrderService.Domain.Entities;
 
-namespace CleanArchitecture.Application.Interfaces.Repository
+namespace OrderService.Application.Interfaces.Repository;
+
+public interface IProductRepository
 {
-    public interface IProductRepository
-    {
-        Product GetById(int id);
-
-        void ReduceStock(int productId);
-    }
+    Product? GetById(int id);
+    void ReduceStock(int productId);
 }

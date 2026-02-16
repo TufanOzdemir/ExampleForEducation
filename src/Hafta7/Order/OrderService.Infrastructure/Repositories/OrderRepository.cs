@@ -1,12 +1,9 @@
-using CleanArchitecture.Application.Interfaces.Repository;
-using CleanArchitecture.Domain.Entities;
+using OrderService.Application.Interfaces.Repository;
+using OrderService.Domain.Entities;
 
-namespace CleanArchitecture.Infrastructure.Repositories;
+namespace OrderService.Infrastructure.Repositories;
 
-internal class OrderRepository(MarketplaceDbContext _context) : IOrderRepository
+internal class OrderRepository(OrderDbContext context) : IOrderRepository
 {
-    public void Add(Order order)
-    {
-        _context.Orders.Add(order);
-    }
+    public void Add(Order order) => context.Orders.Add(order);
 }

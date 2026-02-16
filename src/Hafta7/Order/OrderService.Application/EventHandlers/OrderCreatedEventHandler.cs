@@ -1,8 +1,8 @@
-using CleanArchitecture.Domain.Events;
+using OrderService.Domain.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace CleanArchitecture.Application.EventHandlers;
+namespace OrderService.Application.EventHandlers;
 
 /// <summary>
 /// OrderCreatedEvent MediatR notification handler.

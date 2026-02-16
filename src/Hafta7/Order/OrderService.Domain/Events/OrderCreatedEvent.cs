@@ -1,4 +1,4 @@
-namespace CleanArchitecture.Domain.Events;
+namespace OrderService.Domain.Events;
 
 /// <summary>
 /// Sipariş oluşturulduğunda yayımlanır.

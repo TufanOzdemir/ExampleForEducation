@@ -1,21 +1,20 @@
 using BasketService.Application.UseCases.Basket.AddToBasketUseCaseOld;
-using BasketService.Application.Abstraction;
 using BasketService.Api.Models;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BasketService.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BasketController(AddToBasketCommandHandler addToBasketCommandHandler) : ControllerBase
+    public class BasketController(IMediator mediator) : ControllerBase
     {
         [HttpPost("AddToBasket")]
         [Authorize]
-        public IActionResult AddToBasket([FromBody] AddToBasketRequest request)
+        public async Task<IActionResult> AddToBasket([FromBody] AddToBasketRequest request, CancellationToken cancellationToken)
         {
-            addToBasketCommandHandler.Execute(new AddToBasketCommand(request.ProductId));
+            await mediator.Send(new AddToBasketCommand(request.ProductId), cancellationToken);
             return Ok("Product added to basket");
         }
     }

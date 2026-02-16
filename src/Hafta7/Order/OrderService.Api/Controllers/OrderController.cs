@@ -1,12 +1,10 @@
-﻿using CleanArchitecture.Application.UseCases.Orders.Purchase;
-using Example1.Abstraction;
-using Example1.Models;
+using OrderService.Application.UseCases.Order.Purchase;
+using OrderService.Api.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Example1.Controllers
+namespace OrderService.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -14,9 +12,9 @@ namespace Example1.Controllers
     {
         [HttpPost("Purchase")]
         [Authorize]
-        public IActionResult Purchase([FromBody] PurchaseRequest request)
+        public async Task<IActionResult> Purchase([FromBody] PurchaseRequest request, CancellationToken cancellationToken)
         {
-            mediator.Send(new PurchaseCommand());
+            await mediator.Send(new PurchaseCommand(), cancellationToken);
             return Ok("Purchase successful");
         }
     }

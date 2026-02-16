@@ -1,4 +1,4 @@
-namespace CleanArchitecture.Domain.Common;
+namespace OrderService.Domain.Common;
 
 /// <summary>
 /// Tüm domain entity'leri için temel sınıf.

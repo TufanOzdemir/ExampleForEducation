@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+namespace OrderService.Application.Interfaces;
 
-namespace CleanArchitecture.Application.Interfaces
+public interface ICurrentUserService
 {
-    public interface ICurrentUserService
-    {
-        int UserId { get; }
-        bool IsAuthenticated { get; }
-    }
+    int UserId { get; }
+    bool IsAuthenticated { get; }
 }

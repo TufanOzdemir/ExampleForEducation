@@ -1,12 +1,12 @@
-using CleanArchitecture.Application.Interfaces.Repository;
+using OrderService.Application.Interfaces.Repository;
 
-namespace CleanArchitecture.Infrastructure.Repositories;
+namespace OrderService.Infrastructure.Repositories;
 
 internal class UnitOfWork(
-    MarketplaceDbContext _context, 
-    IProductRepository productRepository, 
-    IOrderRepository orderRepository, 
-    IBasketRepository basketRepository, 
+    OrderDbContext context,
+    IProductRepository productRepository,
+    IOrderRepository orderRepository,
+    IBasketRepository basketRepository,
     IUserRepository userRepository) : IUnitOfWork
 {
     public IProductRepository Products => productRepository;
@@ -14,15 +14,5 @@ internal class UnitOfWork(
     public IBasketRepository Baskets => basketRepository;
     public IUserRepository Users => userRepository;
 
-    public int SaveChanges()
-    {
-        // Tüm repository'lerdeki değişiklikleri tek seferde veritabanına gönderir
-        return _context.SaveChanges();
-    }
-
-    public void Dispose()
-    {
-        // Veritabanı bağlantısını güvenli bir şekilde kapatır
-        _context.Dispose();
-    }
+    public int SaveChanges() => context.SaveChanges();
 }
