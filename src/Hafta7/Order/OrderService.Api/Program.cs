@@ -1,6 +1,8 @@
+using MassTransit;
 using OrderService.Application;
-using OrderService.Infrastructure;
+using OrderService.Application.Consumers;
 using OrderService.Api.Extension;
+using OrderService.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
@@ -20,6 +22,23 @@ builder.Services.AddSwaggerWithJwt();
 
 builder.Services.RegisterInfrastructureServices(builder.Configuration);
 builder.Services.RegisterApplicationServices();
+
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<StockReservedEventConsumer>();
+    x.AddConsumer<StockReserveFailedEventConsumer>();
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(builder.Configuration["RabbitMQ:Host"] ?? "localhost", "/", h =>
+        {
+            h.Username(builder.Configuration["RabbitMQ:Username"] ?? "guest");
+            h.Password(builder.Configuration["RabbitMQ:Password"] ?? "guest");
+        });
+
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 builder.Logging.ClearProviders();
 builder.Host.UseNLog();

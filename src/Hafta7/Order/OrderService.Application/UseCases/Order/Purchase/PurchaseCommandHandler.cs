@@ -1,12 +1,16 @@
+using Contracts;
+using MassTransit;
+using MediatR;
 using OrderService.Application.Interfaces;
 using OrderService.Application.Interfaces.Repository;
 using OrderService.Domain.Entities;
-using OrderService.Domain.Events;
-using MediatR;
 
 namespace OrderService.Application.UseCases.Order.Purchase;
 
-public sealed class PurchaseCommandHandler(IUnitOfWork unitOfWork, IMediator mediator, ICurrentUserService currentUserService) : IRequestHandler<PurchaseCommand, Unit>
+public sealed class PurchaseCommandHandler(
+    IUnitOfWork unitOfWork,
+    IPublishEndpoint publishEndpoint,
+    ICurrentUserService currentUserService) : IRequestHandler<PurchaseCommand, Unit>
 {
     public async Task<Unit> Handle(PurchaseCommand request, CancellationToken cancellationToken)
     {
@@ -29,16 +33,20 @@ public sealed class PurchaseCommandHandler(IUnitOfWork unitOfWork, IMediator med
             throw new InvalidOperationException("Order validation failed");
 
         unitOfWork.Orders.Add(order);
-
-        foreach (var item in user.Baskets)
-        {
-            item.Product.ReduceStock(1);
-        }
-
-        unitOfWork.Baskets.ClearBasket(user.Id);
         unitOfWork.SaveChanges();
 
-        await mediator.Publish(new OrderCreatedEvent(order.Id, order.UserId, order.TotalPrice), cancellationToken);
+        var correlationId = Guid.NewGuid();
+        var items = order.OrderProducts
+            .GroupBy(op => op.ProductId)
+            .Select(g => new OrderStartedItem(g.Key, g.Sum(x => x.Count)))
+            .ToList();
+
+        await publishEndpoint.Publish(new OrderStartedEvent(
+            correlationId,
+            order.Id,
+            order.UserId,
+            order.TotalPrice,
+            items), cancellationToken);
 
         return Unit.Value;
     }

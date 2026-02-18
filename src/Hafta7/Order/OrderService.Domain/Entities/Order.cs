@@ -1,4 +1,5 @@
 using OrderService.Domain.Common;
+using OrderService.Domain.Enums;
 
 namespace OrderService.Domain.Entities;
 
@@ -10,6 +11,8 @@ public partial class Order : AggregateRoot
 
     public DateTime CreateDate { get; set; }
 
+    public OrderStatus Status { get; set; } = OrderStatus.Pending;
+
     public virtual ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
 
     public static Order Create(int userId, List<OrderProduct> orderProducts)
@@ -18,12 +21,17 @@ public partial class Order : AggregateRoot
         {
             UserId = userId,
             CreateDate = DateTime.UtcNow,
+            Status = OrderStatus.Pending,
             OrderProducts = orderProducts
         };
 
         order.CalculateTotalPrice();
         return order;
     }
+
+    public void MarkCompleted() => Status = OrderStatus.Completed;
+
+    public void MarkCancelled() => Status = OrderStatus.Cancelled;
 
     public void CalculateTotalPrice()
     {

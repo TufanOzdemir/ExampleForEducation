@@ -6,5 +6,5 @@ public interface IProductRepository
 {
     List<Product> GetAll();
     Product? GetById(int id);
-    void ReduceStock(int productId);
+    void ReduceStock(int productId, int quantity = 1);
 }

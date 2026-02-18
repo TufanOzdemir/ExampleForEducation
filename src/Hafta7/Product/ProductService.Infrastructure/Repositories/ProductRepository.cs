@@ -9,12 +9,12 @@ internal class ProductRepository(ProductDbContext context) : IProductRepository
 
     public Product? GetById(int id) => context.Products.FirstOrDefault(p => p.Id == id);
 
-    public void ReduceStock(int productId)
+    public void ReduceStock(int productId, int quantity = 1)
     {
         var product = context.Products.FirstOrDefault(p => p.Id == productId);
         if (product != null)
         {
-            product.ReduceStock(1);
+            product.ReduceStock(quantity);
             context.Products.Update(product);
         }
     }

@@ -50,6 +50,7 @@ internal partial class OrderDbContext : DbContext
             entity.ToTable("Order");
             entity.Property(e => e.CreateDate).HasColumnType("datetime");
             entity.Property(e => e.TotalPrice).HasColumnType("money");
+            entity.Property(e => e.Status).HasDefaultValue(OrderService.Domain.Enums.OrderStatus.Pending);
         });
 
         modelBuilder.Entity<OrderProduct>(entity => entity.ToTable("OrderProduct"));
