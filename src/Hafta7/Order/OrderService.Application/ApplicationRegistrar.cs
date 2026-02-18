@@ -1,5 +1,8 @@
+using MassTransit;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OrderService.Application.Consumers;
 
 namespace OrderService.Application
 {
@@ -8,6 +11,29 @@ namespace OrderService.Application
         public static void RegisterApplicationServices(this IServiceCollection services)
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationRegistrar).Assembly));
+        }
+
+        public static void RegisterApplicationServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.RegisterApplicationServices();
+
+            services.AddMassTransit(x =>
+            {
+                x.AddConsumer<OrderStartedFailedEventConsumer>();
+                x.AddConsumer<StockReservedEventConsumer>();
+                x.AddConsumer<StockReserveFailedEventConsumer>();
+
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(configuration["RabbitMQ:Host"] ?? "localhost", "/", h =>
+                    {
+                        h.Username(configuration["RabbitMQ:Username"] ?? "guest");
+                        h.Password(configuration["RabbitMQ:Password"] ?? "guest");
+                    });
+
+                    cfg.ConfigureEndpoints(context);
+                });
+            });
         }
     }
 }

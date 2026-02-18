@@ -1,6 +1,4 @@
-using MassTransit;
 using BasketService.Application;
-using BasketService.Application.Consumers;
 using BasketService.Api.Extension;
 using BasketService.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,24 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerWithJwt();
 
 builder.Services.RegisterInfrastructureServices(builder.Configuration);
-builder.Services.RegisterApplicationServices();
-
-builder.Services.AddMassTransit(x =>
-{
-    x.AddConsumer<OrderStartedEventConsumer>();
-    x.AddConsumer<StockReserveFailedEventConsumer>();
-
-    x.UsingRabbitMq((context, cfg) =>
-    {
-        cfg.Host(builder.Configuration["RabbitMQ:Host"] ?? "localhost", "/", h =>
-        {
-            h.Username(builder.Configuration["RabbitMQ:Username"] ?? "guest");
-            h.Password(builder.Configuration["RabbitMQ:Password"] ?? "guest");
-        });
-
-        cfg.ConfigureEndpoints(context);
-    });
-});
+builder.Services.RegisterApplicationServices(builder.Configuration);
 
 builder.Logging.ClearProviders();
 builder.Host.UseNLog();

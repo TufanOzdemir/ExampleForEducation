@@ -1,23 +1,14 @@
 using Contracts;
+using MediatR;
 using MassTransit;
-using OrderService.Application.Interfaces.Repository;
+using OrderService.Application.UseCases.Order.CancelOrder;
 
 namespace OrderService.Application.Consumers;
 
-public sealed class StockReserveFailedEventConsumer(IUnitOfWork unitOfWork) : IConsumer<IStockReserveFailedEvent>
+public sealed class StockReserveFailedEventConsumer(IMediator mediator) : IConsumer<IStockReserveFailedEvent>
 {
-    public Task Consume(ConsumeContext<IStockReserveFailedEvent> context)
+    public async Task Consume(ConsumeContext<IStockReserveFailedEvent> context)
     {
-        var message = context.Message;
-        var order = unitOfWork.Orders.GetById(message.OrderId);
-        if (order == null)
-        {
-            return Task.CompletedTask;
-        }
-
-        order.MarkCancelled();
-        unitOfWork.SaveChanges();
-
-        return Task.CompletedTask;
+        await mediator.Send(new CancelOrderCommand(context.Message.OrderId), context.CancellationToken);
     }
 }

@@ -1,6 +1,4 @@
-using MassTransit;
 using ProductService.Application;
-using ProductService.Application.Consumers;
 using ProductService.Api.Extension;
 using ProductService.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -21,23 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.RegisterInfrastructureServices(builder.Configuration);
-builder.Services.RegisterApplicationServices();
-
-builder.Services.AddMassTransit(x =>
-{
-    x.AddConsumer<BasketClearedEventConsumer>();
-
-    x.UsingRabbitMq((context, cfg) =>
-    {
-        cfg.Host(builder.Configuration["RabbitMQ:Host"] ?? "localhost", "/", h =>
-        {
-            h.Username(builder.Configuration["RabbitMQ:Username"] ?? "guest");
-            h.Password(builder.Configuration["RabbitMQ:Password"] ?? "guest");
-        });
-
-        cfg.ConfigureEndpoints(context);
-    });
-});
+builder.Services.RegisterApplicationServices(builder.Configuration);
 
 builder.Logging.ClearProviders();
 builder.Host.UseNLog();
