@@ -1,0 +1,19 @@
+# Zipkin - Distributed Tracing
+# Çalıştırmak: docker compose -f docker-compose.zipkin.yml up -d
+# UI: http://localhost:9411
+# Purchase isteğini OrderService'e gönderdikten sonra Zipkin'de aynı trace altında
+# OrderService -> BasketService -> ProductService -> OrderService -> NotificationService akışını görebilirsiniz.
+
+services:
+  zipkin:
+    image: openzipkin/zipkin:latest
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+    environment:
+      - STORAGE_TYPE=mem
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9411/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3

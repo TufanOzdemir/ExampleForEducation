@@ -1,10 +1,13 @@
-using ProductService.Application;
-using ProductService.Api.Extension;
-using ProductService.Infrastructure;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
 using NLog.Web;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using ProductService.Api.Extension;
+using ProductService.Application;
+using ProductService.Infrastructure;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +23,23 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.RegisterInfrastructureServices(builder.Configuration);
 builder.Services.RegisterApplicationServices(builder.Configuration);
+
+// Distributed Tracing - OpenTelemetry + Zipkin
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(r => r.AddService(
+        serviceName: "ProductService",
+        serviceVersion: "1.0",
+        serviceInstanceId: Environment.MachineName))
+    .WithTracing(t =>
+    {
+        t.AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddSource(MassTransit.Logging.DiagnosticHeaders.DefaultListenerName)
+            .AddZipkinExporter(o =>
+            {
+                o.Endpoint = new Uri(builder.Configuration["Zipkin:Endpoint"] ?? "http://localhost:9411/api/v2/spans");
+            });
+    });
 
 builder.Logging.ClearProviders();
 builder.Host.UseNLog();
