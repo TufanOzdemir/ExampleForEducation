@@ -1,7 +1,6 @@
 namespace Contracts;
 
 public record OrderStartedEvent(
-    Guid CorrelationId,
     int OrderId,
     int UserId,
     decimal TotalPrice,

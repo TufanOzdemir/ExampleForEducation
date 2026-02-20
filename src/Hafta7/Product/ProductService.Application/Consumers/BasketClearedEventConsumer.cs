@@ -25,7 +25,6 @@ public sealed class BasketClearedEventConsumer(IUnitOfWork unitOfWork, IPublishE
                     : $"Yetersiz stok. Ürün: {item.ProductId}, Mevcut: {product.Stock}, İstenen: {item.Count}";
 
                 await publishEndpoint.Publish(new StockReserveFailedEvent(
-                    message.CorrelationId,
                     message.OrderId,
                     message.UserId,
                     failedItems,
@@ -42,7 +41,6 @@ public sealed class BasketClearedEventConsumer(IUnitOfWork unitOfWork, IPublishE
         unitOfWork.SaveChanges();
 
         await publishEndpoint.Publish(new StockReservedEvent(
-            message.CorrelationId,
             message.OrderId,
             message.UserId), context.CancellationToken);
     }

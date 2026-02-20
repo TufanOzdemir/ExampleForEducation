@@ -35,14 +35,12 @@ public sealed class PurchaseCommandHandler(
         unitOfWork.Orders.Add(order);
         unitOfWork.SaveChanges();
 
-        var correlationId = Guid.NewGuid();
         var items = order.OrderProducts
             .GroupBy(op => op.ProductId)
             .Select(g => new OrderStartedItem(g.Key, g.Sum(x => x.Count)))
             .ToList();
 
         await publishEndpoint.Publish(new OrderStartedEvent(
-            correlationId,
             order.Id,
             order.UserId,
             order.TotalPrice,

@@ -6,7 +6,6 @@ namespace Contracts;
 /// </summary>
 public interface IOrderStartedFailedEvent
 {
-    Guid CorrelationId { get; }
     int OrderId { get; }
     int UserId { get; }
     string Reason { get; }

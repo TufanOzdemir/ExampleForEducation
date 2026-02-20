@@ -25,7 +25,6 @@ public sealed class OrderStartedEventConsumer(
                 .ToList();
 
             await publishEndpoint.Publish(new BasketClearedEvent(
-                message.CorrelationId,
                 message.OrderId,
                 message.UserId,
                 items), context.CancellationToken);
@@ -37,7 +36,6 @@ public sealed class OrderStartedEventConsumer(
                 message.OrderId, message.UserId);
 
             await publishEndpoint.Publish(new OrderStartedFailedEvent(
-                message.CorrelationId,
                 message.OrderId,
                 message.UserId,
                 ex.Message), context.CancellationToken);

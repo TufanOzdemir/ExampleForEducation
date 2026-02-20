@@ -20,7 +20,6 @@ public sealed class StockReservedEventConsumer(IUnitOfWork unitOfWork, IPublishE
         unitOfWork.SaveChanges();
 
         await publishEndpoint.Publish(new OrderCompletedEvent(
-            message.CorrelationId,
             message.OrderId,
             message.UserId,
             order.TotalPrice), context.CancellationToken);

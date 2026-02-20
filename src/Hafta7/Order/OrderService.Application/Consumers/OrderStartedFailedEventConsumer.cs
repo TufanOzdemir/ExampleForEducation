@@ -1,7 +1,6 @@
 using Contracts;
-using Contracts;
-using MediatR;
 using MassTransit;
+using MediatR;
 using OrderService.Application.UseCases.Order.CancelOrder;
 
 namespace OrderService.Application.Consumers;
